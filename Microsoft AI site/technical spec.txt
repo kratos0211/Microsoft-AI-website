@@ -1,0 +1,21 @@
+3 steps registration
+
+
+
+/root-folder
+│
+├── /src                  <-- Public Frontend (HTML/JS/CSS)
+│   ├── index.html        (Landing page with registration)
+│   ├── training.html     (Workshop enrollment & calendar)
+│   ├── chat.html         (AI Chat Assistant interface)
+│   └── /assets           (Images/logos/styles)
+│
+├── /api                  <-- Private Backend (Azure Functions)
+│   ├── /register         (Validates eligibility for free licenses)
+│   ├── /enroll           (Handles workshop sign-ups)
+│   ├── /chat             (Secures calls to Azure OpenAI/Copilot)
+│   └── package.json      (Backend dependencies)
+│
+├── /node_modules         (Development dependencies)
+├── .github/workflows     (Automated CI/CD deployment files)
+└── staticwebapp.config.json (Routing and security rules)
