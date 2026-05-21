@@ -220,52 +220,22 @@
                 </div>
                 <div class="flex items-center gap-4">
                     <button class="flex items-center gap-1.5 text-xs font-medium text-slate-500 hover:text-slate-800 transition-colors">
-                        <i data-lucide="history" class="w-4 h-4"></i> History
+                        <i data-lucide="history" class="w-4 h-4"></i> History <!-- Note: History for iframe chat might be managed internally by Copilot Studio -->
                     </button>
-                    <button onclick="clearChat()" class="text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors">
-                        New Chat
+                    <button class="text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors">
+                        New Chat <!-- Note: New Chat for iframe chat might be managed internally by Copilot Studio -->
                     </button>
                 </div>
             </div>
-
-            <!-- Messages Container -->
-            <div id="chat-messages" class="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
-                <!-- Initial Welcome -->
-                <div class="flex gap-4">
-                    <div class="w-8 h-8 rounded-lg flex shrink-0 items-center justify-center bg-gradient-to-br from-blue-600 to-blue-400 text-white">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="rotate-45">
-                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                            <circle cx="12" cy="12" r="2" fill="white"></circle>
-                        </svg>
-                    </div>
-                    <div class="flex flex-col max-w-[80%]">
-                        <div class="p-4 rounded-2xl text-sm leading-relaxed shadow-sm bg-blue-50 text-slate-700 border border-blue-100">
-                            Welcome to the Microsoft Copilot Launchpad! I can help you understand Copilot features, pricing, or assist with your license registration. How can I help you today?
-                        </div>
-                        <span class="mt-1 text-[10px] text-slate-400 font-medium timestamp"></span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Input Section (unchanged) -->
-            <div class="p-6 bg-slate-50/50 border-t border-slate-100">
-                <div class="flex flex-wrap gap-2 mb-4">
-                    <button onclick="fillInput('Compare Copilot Plans')" class="px-4 py-1.5 bg-white border border-slate-200 rounded-full text-xs font-medium text-slate-600 hover:border-blue-400 hover:text-blue-600 hover:shadow-sm transition-all">Compare Copilot Plans</button>
-                    <button onclick="fillInput('Training Workshops')" class="px-4 py-1.5 bg-white border border-slate-200 rounded-full text-xs font-medium text-slate-600 hover:border-blue-400 hover:text-blue-600 hover:shadow-sm transition-all">Training Workshops</button>
-                    <button onclick="fillInput('Security Features')" class="px-4 py-1.5 bg-white border border-slate-200 rounded-full text-xs font-medium text-slate-600 hover:border-blue-400 hover:text-blue-600 hover:shadow-sm transition-all">Security Features</button>
-                </div>
-                <form id="chat-form" class="relative group">
-                    <div class="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-2 text-slate-400">
-                        <button type="button" class="hover:text-blue-500 transition-colors"><i data-lucide="paperclip" class="w-5 h-5"></i></button>
-                        <button type="button" class="hover:text-blue-500 transition-colors"><i data-lucide="globe" class="w-5 h-5"></i></button>
-                    </div>
-                    <input id="chat-input" type="text" autocomplete="off" placeholder="Ask about Microsoft Copilot functions..." class="w-full bg-white border border-slate-200 rounded-xl py-4 pl-20 pr-14 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm" />
-                    <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 p-2.5 rounded-lg bg-blue-600 text-white shadow-md hover:bg-blue-700 transition-all">
-                        <i data-lucide="send" class="w-5 h-5"></i>
-                    </button>
-                </form>
-            </div>
-        </section>
+            <!-- Iframe Chat Interface -->
+    <div class="flex-1 w-full h-full bg-white">
+        <iframe 
+            src="https://copilotstudio.microsoft.com/environments/116b84d7-e708-4b05-8720-a0e6f59a0b70/bots/crb3f_hrOnboardingAssistant/webchat?__version__=2" 
+            frameborder="0" 
+            style="width: 100%; height: 100%; min-height: 500px;"
+            allow="microphone *">
+        </iframe>
+    </div>
     </main>
 
     <script>
@@ -273,9 +243,6 @@
         lucide.createIcons();
 
         // Elements
-        const chatMessages = document.getElementById('chat-messages');
-        const chatForm = document.getElementById('chat-form');
-        const chatInput = document.getElementById('chat-input');
         const faqModal = document.getElementById('faq-modal');
         const navItems = document.querySelectorAll('.nav-item');
 
@@ -307,76 +274,49 @@
 
             switch(navId) {
                 case 'license':
-                    appendMessage('user', "I want to claim my free Copilot license.");
-                    setTimeout(() => appendMessage('assistant', "Excellent choice! To proceed, I'll need your Ingram Micro Partner ID. Would you like me to walk you through the claim process?"), 600);
+                    // Action for 'license' navigation item (e.g., redirect, open modal, etc.)
+                    console.log("Navigating to license claim.");
                     break;
                 case 'workshops':
-                    appendMessage('user', "Show me available workshops.");
-                    setTimeout(() => appendMessage('assistant', "Currently we have: \n1. Copilot Technical Readiness (May 22) \n2. Sales Accelerator Workshop (June 01). \n\nClick 'Enroll' on your dashboard to book a seat."), 600);
+                    // Action for 'workshops' navigation item
+                    console.log("Navigating to workshops.");
+                    break;
+                case 'chat':
+                    // 'chat' is now handled by the iframe, no custom message needed here.
+                    console.log("Chat interface is active (via iframe).");
                     break;
             }
         }
-
-        navItems.forEach(btn => {
-            if (btn.dataset.nav) btn.addEventListener('click', () => handleNavigation(btn.dataset.nav));
-        });
 
         // Resource link interactions
         document.querySelectorAll('.resource-link').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const query = link.dataset.query;
-                appendMessage('user', query);
-                setTimeout(() => {
-                    appendMessage('assistant', `Opening the technical documentation for you. \n\nYou can also find the official guide here: ${link.nextElementSibling.href} \n\nWhat specific part of this topic can I explain for you?`);
-                }, 800);
+                // If you want to send this query to the iframe, you'd need to use postMessage API
+                console.log(`Resource link clicked with query: ${query}. External link: ${link.nextElementSibling.href}`);
+                // Optionally, you could open the external link directly or trigger a modal.
             });
         });
 
+        // The fillInput function is no longer directly applicable to the iframe chat.
+        // If you need to pre-fill the iframe's input, you'd need to use its specific API (if available).
         function fillInput(text) {
-            chatInput.value = text;
-            chatInput.focus();
+            // This function is now effectively a placeholder or needs to be re-purposed
+            // if you want to interact with the iframe's input field.
+            console.log(`Attempted to fill input with: "${text}"`);
         }
 
-        function appendMessage(role, content) {
-            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            const isUser = role === 'user';
-            const formatted = content.replace(/\n/g, '<br>');
-
-            const html = `
-                <div class="flex gap-4 ${isUser ? 'flex-row-reverse' : ''} animate-in fade-in slide-in-from-bottom-1 duration-300">
-                    <div class="w-8 h-8 rounded-lg flex shrink-0 items-center justify-center ${isUser ? 'bg-slate-200 text-slate-600' : 'bg-gradient-to-br from-blue-600 to-blue-400 text-white'}">
-                        ${isUser ? '<i data-lucide="user" class="w-4 h-4"></i>' : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="rotate-45"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="12" cy="12" r="2" fill="white"></circle></svg>'}
-                    </div>
-                    <div class="flex flex-col max-w-[80%] ${isUser ? 'items-end' : ''}">
-                        <div class="p-4 rounded-2xl text-sm shadow-sm ${isUser ? 'bg-slate-800 text-white' : 'bg-blue-50 text-slate-700 border border-blue-100'}">
-                            ${formatted}
-                        </div>
-                        <span class="mt-1 text-[10px] text-slate-400 font-medium">${time}</span>
-                    </div>
-                </div>
-            `;
-            chatMessages.insertAdjacentHTML('beforeend', html);
-            lucide.createIcons();
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        chatForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const text = chatInput.value.trim();
-            if (!text) return;
-            appendMessage('user', text);
-            chatInput.value = '';
-            setTimeout(() => appendMessage('assistant', `I'm looking into "${text}" for you within our Microsoft Knowledge Base. One moment...`), 1000);
+        // Event listeners for navigation items
+        navItems.forEach(btn => {
+            if (btn.dataset.nav) btn.addEventListener('click', () => handleNavigation(btn.dataset.nav));
         });
 
+        // The clearChat function is no longer relevant for the iframe chat.
         function clearChat() {
-            chatMessages.innerHTML = '';
-            appendMessage('assistant', "Chat cleared. How can I help you start your Copilot journey?");
+            console.log("Clear chat button clicked. Iframe chat state is managed by Copilot Studio.");
+            // If you need to reset the iframe chat, you might need to reload the iframe or use its API.
         }
-
-        // Set initial timestamps
-        document.querySelectorAll('.timestamp').forEach(el => el.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
     </script>
 </body>
 </html>
